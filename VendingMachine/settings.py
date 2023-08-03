@@ -55,7 +55,7 @@ ROOT_URLCONF = 'VendingMachine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'item/templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'item/../templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

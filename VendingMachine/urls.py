@@ -15,8 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
+from django.views.generic import RedirectView
 
 urlpatterns = [
+    # Admin dashboard URL.
     path('admin/', admin.site.urls),
+
+    # URL patterns for the 'item' app.
+    path('item/', include('item.urls')),
+
+    # If the user accesses the base URL, redirect to the 'item/' path.
+    re_path(r'^$', RedirectView.as_view(url='/item/')),
+
 ]

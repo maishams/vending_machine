@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Title -->
+    <title>Amazon Vending Machine</title>
+
+    <!-- Scripts -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
+</head>
+
+<body>
+
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h1 id="title">Order an Item</h1>
+        </div>
+        <div class="panel-body">
+            {% if item_list %}
+                <ul class="list-group">
+                    {% for item in item_list %}
+                        {% if item.itemQuantity == 0 %}
+                            <button type="button" class="list-group-item disabled">
+                                <font color="#808080">{{ item.itemType }}</font>
+                                <span class="badge badge-primary badge-pill">Not available</span>
+                            </button>
+                        {% else %}
+                            <a class="nounderline" href="{% url 'payment' item.id %}">
+                                <button type="button" class="list-group-item">
+                                    <font color="#6F4827">{{ item.itemType }}</font>
+                                    <span class="badge badge-primary badge-pill">{{ item.itemQuantity }}</span>
+                                    <span id="priceId">{{ item.itemPrice }} £</span>
+                                </button>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <ul class="list-group-item-warning">No items available.</ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
