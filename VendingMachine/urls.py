@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 
+from item import views
+
 urlpatterns = [
-    # Admin dashboard URL.
+    # Admin area URL.
     path('admin/', admin.site.urls),
+
+    # Admin dashboard URL.
+    path('admin/dashboard/', views.dashboard, name='dashboard'),
 
     # URL patterns for the 'item' app.
     path('item/', include('item.urls')),

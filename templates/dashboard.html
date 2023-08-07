@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Title -->
+    <title>Amazon Vending Machine</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h1 id="title">Dashboard</h1>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <!-- Date Range Filter Form -->
+                <!-- This form allows admins to select a date range to filter the displayed statistics. -->
+                <form method="get" action="{% url 'dashboard' %}">
+                    <div class="row">
+                        <li class="list-group-item">
+                            <label for="start_date">Start Date:</label>
+                            <input type="date" id="start_date" name="start_date" value="{{ start_date|date:"Y-m-d" }}"
+                                   class="form-control">
+                        </li>
+                        <li class="list-group-item">
+                            <label for="end_date">End Date:</label>
+                            <input type="date" id="end_date" name="end_date" value="{{ end_date|date:"Y-m-d" }}"
+                                   class="form-control">
+                        </li>
+                        <input type="submit" class="btn-warning btn-lg" value="Filter">
+                    </div>
+                </form>
+            </ul>
+        </div>
+
+        <!-- Display Statistics -->
+        <!-- This section displays the aggregated statistics based on the selected date range. -->
+        <div class="panel-body">
+            <h3>Statistics</h3>
+            <p><strong>Total Purchases:</strong> {{ total_purchases }}</p>
+            <p><strong>Total Revenue:</strong> ${{ total_revenue }}</p>
+
+            <h4>Purchases by Item Type:</h4>
+            <ul>
+                {% for item in purchases_per_item %}
+                    <li><strong>{{ item.hItemType }}</strong>: {{ item.total }} purchases</li>
+                {% endfor %}
+            </ul>
+
+            <h4>Purchases by Item Description:</h4>
+            <ul>
+                {% for item in purchases_per_description %}
+                    <li><strong>{{ item.itemDescription }}</strong>: {{ item.total }} purchases</li>
+                {% endfor %}
+            </ul>
+
+            <h4>Top 10 Users:</h4>
+            <ul>
+                {% for user in top_users %}
+                    <li>
+                        <strong>Username</strong>: {{ user.username }},
+                        <strong>Total Spent</strong>: ${{ user.total_spent }},
+                        <strong>Items Bought</strong>: {{ user.items_bought }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery for interactivity -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>
