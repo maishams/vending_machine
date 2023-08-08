@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Amazon LHR16 Vending Machine - Registration</title>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body id="loginBody">
+<!-- Registration Failed Alert Script -->
+<script>
+    $(document).ready(function () {
+        $("#loginFailed").fadeTo(2000, 500).slideUp(500, function () {
+            $("#loginFailed").slideUp(500);
+        });
+    });
+</script>
+
+<!-- Registration Form -->
+<div class="login-div">
+    <form action="{% url 'validateUser' %}" method="post">
+        {% csrf_token %}
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h1 id="heading-title">Amazon LHR16 Vending Machine - Registration</h1>
+            </div>
+            <div id="panel-index-body" class="panel-body">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name"
+                           required>
+                </div>
+                <div class="form-group">
+                    <label for="user">Email</label>
+                    <input type="text" class="form-control" id="user" name="user" placeholder="User name" required
+                           pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$"
+                           title="Please enter a valid email address.">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                           required minlength="8" title="Password must be at least 8 characters long.">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                           placeholder="Confirm password" required>
+                </div>
+                <button type="submit" class="btn-warning btn-lg">Sign up</button>
+                <a class="nounderline" href="{% url 'index' %}">
+                    <button type="button" class="btn-secondary btn-lg">Cancel</button>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Registration Failed Alert -->
+<div class="alert">
+    {% if registrationFailed is True %}
+        <div id="loginFailed" class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="alert-heading">Registration Error</h4>
+            <p>Existing user or confirm password mismatch. Password must contain more than 8 characters.</p>
+        </div>
+    {% endif %}
+</div>
+</body>
+
+</html>

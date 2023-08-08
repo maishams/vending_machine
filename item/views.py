@@ -17,6 +17,43 @@ def index(request):
         itemQuantity=Sum('itemQuantity'))
     return render(request, 'index.html')
 
+# Renders the registration page.
+def registration(request):
+    return render(request, 'registration.html')
+
+
+# Validates user registration by checking if the username already exists and if the passwords match.
+def validateUser(request):
+    context = {'registrationFailed': False}
+
+    if request.method == 'POST':
+        username = request.POST.get('user')
+        name = request.POST.get('name')
+        lastName = request.POST.get('last_name')
+        password = request.POST.get('password')
+        confirm = request.POST.get('confirm_password')
+
+        # Check if user already exists
+        if User.objects.filter(username=username).exists():
+            context['registrationFailed'] = True
+            context['error_message'] = "Username already exists."
+        # Check if passwords match
+        elif password != confirm:
+            context['registrationFailed'] = True
+            context['error_message'] = "Passwords do not match."
+        # Check password strength
+        elif len(password) < 8 or not any(char.isdigit() for char in password) or not any(
+                char.isalpha() for char in password):
+            context['registrationFailed'] = True
+            context[
+                'error_message'] = "Password must be at least 8 characters long and contain both numbers and letters."
+        else:
+            user = User(username=username, first_name=name, last_name=lastName)
+            user.set_password(password)
+            user.save()
+            return HttpResponseRedirect(reverse('index'))
+
+    return render(request, 'registration.html', context)
 
 # Renders the login page. Displays an error message if login fails.
 def log(request, loginFailed=False):

@@ -21,11 +21,11 @@ from django.views.generic import RedirectView
 from item import views
 
 urlpatterns = [
-    # Admin area URL.
-    path('admin/', admin.site.urls),
-
     # Admin dashboard URL.
     path('admin/dashboard/', views.dashboard, name='dashboard'),
+
+    # Admin area URL.
+    path('admin/', admin.site.urls),
 
     # URL patterns for the 'item' app.
     path('item/', include('item.urls')),
