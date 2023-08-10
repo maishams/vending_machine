@@ -17,6 +17,10 @@ def index(request):
         itemQuantity=Sum('itemQuantity'))
     return render(request, 'index.html')
 
+# Renders the about page.
+def about(request):
+    return render(request, 'about.html')
+
 # Renders the registration page.
 def registration(request):
     return render(request, 'registration.html')

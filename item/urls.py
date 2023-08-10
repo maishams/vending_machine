@@ -5,6 +5,9 @@ urlpatterns = [
     # Main page displaying all items.
     path('', views.index, name='index'),
 
+    # About page of the website.
+    path('about/', views.about, name='about'),
+
     # User registration page.
     path('registration/', views.registration, name='registration'),
 
