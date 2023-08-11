@@ -21,6 +21,10 @@ def index(request):
 def about(request):
     return render(request, 'about.html')
 
+# Renders the contact page.
+def contact(request):
+    return render(request, 'contact.html')
+
 # Renders the registration page.
 def registration(request):
     return render(request, 'registration.html')

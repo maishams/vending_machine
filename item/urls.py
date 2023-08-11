@@ -8,6 +8,9 @@ urlpatterns = [
     # About page of the website.
     path('about/', views.about, name='about'),
 
+    # Contact page of the website.
+    path('contact/', views.contact, name='contact'),
+
     # User registration page.
     path('registration/', views.registration, name='registration'),
 
