@@ -17,13 +17,16 @@ def index(request):
         itemQuantity=Sum('itemQuantity'))
     return render(request, 'index.html')
 
+
 # Renders the about page.
 def about(request):
     return render(request, 'about.html')
 
+
 # Renders the contact page.
 def contact(request):
     return render(request, 'contact.html')
+
 
 # Renders the registration page.
 def registration(request):
@@ -63,6 +66,7 @@ def validateUser(request):
 
     return render(request, 'registration.html', context)
 
+
 # Renders the login page. Displays an error message if login fails.
 def log(request, loginFailed=False):
     return render(request, 'login.html', {'loginFailed': loginFailed})
@@ -82,6 +86,44 @@ def authenticateView(request):
 
         # If authentication fails, render the login page with an error message.
         return render(request, 'login.html', {'loginFailed': True})
+
+
+# Displays the user's account details including purchase history and favorite item type.
+@login_required
+def account(request):
+    user = request.user
+    historyList = History.objects.filter(user=user).order_by('-purchaseTime')
+
+    # Calculate the total spending of the user.
+    totalSpending = History.objects.filter(user=user).aggregate(total=Sum('hItemPrice')).get('total', 0)
+    totalSpending = round(totalSpending, 2) if totalSpending else 0
+
+    # Determine the user's favorite item type based on purchase history.
+    favourite_types = historyList.values("hItemType").annotate(itemQuantity=Count('hItemType'))
+    favouriteType = favourite_types[0]['hItemType'] if favourite_types.exists() else None
+
+    # Render the account page with the user's details.
+    return render(request, 'account.html',
+                  {'user': user, 'historyList': historyList, 'totalSpending': totalSpending,
+                   'favouriteType': favouriteType})
+
+
+# Deletes the purchase history of the authenticated user.
+@login_required
+def cleanHistory(request):
+    user = request.user
+    # If the request method is POST, it means the user has confirmed the deletion.
+    if request.method == 'POST':
+        # Fetch all history records associated with the user.
+        historyList = History.objects.filter(user=user)
+
+        # Delete each history record.
+        for history in historyList:
+            history.clean()
+
+        # Redirect the user to the previous page they were on.
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 # Shows dashboard of trends of usage of the vending machine
 @login_required

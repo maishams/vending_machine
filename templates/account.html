@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Vending Machine - Account Details</title>
+
+    <!-- Scripts -->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+        function openModal() {
+            document.getElementById('confirmationModal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('confirmationModal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+    </script>
+</head>
+
+<body>
+
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h1>Account Details</h1>
+        </div>
+        <div class="panel-body">
+            <!-- Account Information Table -->
+            <table class="table">
+                <thead>
+                <tr class="table-warning">
+                    <th>User</th>
+                    <th>Total Spending</th>
+                    <th>Favourite Item</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ user }}</td>
+                    <td>£{{ totalSpending }}</td>
+                    <td>{{ favouriteType }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Purchase History -->
+            {% if historyList %}
+                <ul class="list-group">
+                    {% for history in historyList %}
+                        <li class="list-group-item history">
+                            {{ history.hItemType }}
+                            <span class="time history-t">{{ history.purchaseTime }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <ul class="list-group-item-warning">No purchase made.</ul>
+            {% endif %}
+
+            <!-- Clean History Button -->
+            <form action="{% url 'cleanHistory' %}" method="post">
+                {% csrf_token %}
+                {% if historyList %}
+                    <button type="button" onclick="openModal()">Delete History</button>
+                {% endif %}
+                <a class="nounderline" href="{% url 'index' %}">
+                    <button type="button" class="btn-secondary btn-lg">Back</button>
+                </a>
+            </form>
+
+            <!-- Confirmation Modal -->
+            <div id="confirmationModal"
+                 style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, -50%); z-index:1000; background-color:white; padding:20px; border:1px solid #ccc;">
+                <h2>Confirm Deletion</h2>
+                <p>Are you sure you want to delete your purchase history?</p>
+                <form method="post" action="{% url 'cleanHistory' %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Yes, Delete">
+                    <button type="button" onclick="closeModal()">Cancel</button>
+                </form>
+            </div>
+
+            <!-- Overlay to darken the background when modal is open -->
+            <div id="overlay"
+                 style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

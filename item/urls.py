@@ -22,4 +22,10 @@ urlpatterns = [
 
     # Endpoint to authenticate user login details.
     path('login/authenticate/', views.authenticateView, name='authenticate'),
+
+    # User account page displaying purchase history and other details.
+    path('account/', views.account, name='account'),
+
+    # Endpoint to clear the user's purchase history.
+    path('account/clean', views.cleanHistory, name='cleanHistory'),
 ]
