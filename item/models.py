@@ -31,7 +31,7 @@ class Item(models.Model):
     itemType = models.CharField('Type', choices=ITEM_CHOICES, max_length=25, default="Mouse")
     itemDescription = models.TextField('Description', max_length=400, help_text="Insert a brief product description",
                                        default="")
-    itemPrice = models.DecimalField('Price', max_digits=4, decimal_places=2, default=0.50)
+    itemPrice = models.DecimalField('Price', max_digits=4, decimal_places=2, default=0)
     itemQuantity = models.PositiveSmallIntegerField('Quantity', default=1, editable=True)
     itemImage = models.ImageField(blank=True, null=True)
 
