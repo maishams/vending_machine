@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Details</title>
+
+    <!-- Scripts -->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+        function showPaymentModal() {
+            document.getElementById('paymentModal').style.display = 'block';
+            document.getElementById('paymentOverlay').style.display = 'block';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            document.getElementById('paymentOverlay').style.display = 'none';
+        }
+    </script>
+</head>
+
+<body>
+
+<!-- Error Message -->
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<!-- Main Content -->
+<form action="{% url 'pay' item.id %}" method="post">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h1>Item Chosen: </h1>
+            </div>
+
+            <div id="panel-index-body" class="panel-body">
+                <table class="table">
+                    <tr class="table-warning">
+                        <td class="table-warning"><b>Type</b></td>
+                        <td class="table-warning"><b>Price</b></td>
+                    </tr>
+                    <tr>
+                        <td class="table-bordered">{{ item }}</td>
+                        <td id="paymentPriceId" class="table-bordered">{{ item.itemPrice }} €</td>
+                    </tr>
+                </table>
+
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading"><h5><b><font color="black">Description: </font></b></h5></div>
+                            <div class="panel-body"><p>{{ item.itemDescription }}</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="button" class="btn-warning btn-lg" name="id" value="Pay" onclick="showPaymentModal()">
+                <a class="nounderline" href="{% url 'index' %}">
+                    <button type="button" class="btn-secondary btn-lg">
+                        Cancel
+                    </button>
+                </a>
+
+                <!-- Payment Notification Modal -->
+                <div id="paymentModal"
+                     style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, -50%); z-index:1000; background-color:white; padding:20px; border:1px solid #ccc;">
+                    <h2>Please be frugal. The item may be free to you, but it costs Amazon money. Would you like to
+                        proceed?</h2>
+                    <p id="paymentMessage"></p>
+                    <input type="submit" value="Yes, Proceed">
+                    <button type="button" onclick="closePaymentModal()">Close</button>
+                </div>
+
+                <!-- Overlay to darken the background when modal is open -->
+                <div id="paymentOverlay"
+                     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
+
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+
+</html>

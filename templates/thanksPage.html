@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Amazon LHR16 Vending Machine - Thank You</title>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- Thank You Panel -->
+    <div class="container-fluid">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h1 id="heading-title">Thank You!</h1>
+            </div>
+            <div id="panel-index-body" class="panel-body">
+                Thank you for choosing Amazon LHR16 Vending Machine. Your product will be dispensed shortly.
+                <br>
+                <br>
+                <a class="nounderline" href="{% url 'index' %}">
+                    <button id="continueButton" type="button" class="btn-warning btn-lg">
+                        Continue shopping
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Alert -->
+    <div class="alert">
+        <div id="success" class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="alert-heading">Success!</h4>
+            <p>Your purchase has been successful.</p>
+        </div>
+    </div>
+
+    <!-- Script for Success Alert and Continue Button -->
+    <script>
+        $(document).ready(function() {
+            $("#success").fadeTo(2000, 500).slideUp(500, function() {
+                $("#success").slideUp(500);
+            });
+
+            $("#continueButton").hide();
+            setTimeout(function() {
+                $("#continueButton").show();
+            }, 3000);
+        });
+    </script>
+</body>
+
+</html>

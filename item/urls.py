@@ -5,6 +5,12 @@ urlpatterns = [
     # Main page displaying all items.
     path('', views.index, name='index'),
 
+    # Payment page for a specific item type.
+    path('<int:itemId>/payment/', views.payment, name='payment'),
+
+    # Endpoint to process payment for a specific item type.
+    path('<int:itemId>/payment/pay/', views.pay, name='pay'),
+
     # About page of the website.
     path('about/', views.about, name='about'),
 

@@ -15,7 +15,44 @@ from .models import Item, History
 def index(request):
     item_list = Item.objects.all().values('id', 'itemType', 'itemPrice').annotate(
         itemQuantity=Sum('itemQuantity'))
-    return render(request, 'index.html')
+    context = {
+        'item_list': item_list
+    }
+    return render(request, 'index.html', context)
+
+
+# Renders the payment page for a specific item type.
+def payment(request, itemId):
+    item = Item.objects.filter(id=itemId).first()
+    return render(request, 'payment.html', {'item': item})
+
+
+# Processes the payment for a specific item type.
+def pay(request, itemId):
+    # Check if user is authenticated
+    if not request.user.is_authenticated:
+        return render(request, 'login.html')
+
+    # Check if the item exists
+    item_exists = Item.objects.filter(id=itemId).exists()
+
+    if not item_exists:
+        return render(request, 'errorPage.html', {'error_message': "Item does not exist."})
+
+    # Fetch the item and determine if it's the last one
+    item = Item.objects.get(id=itemId)
+    isLast = item.itemQuantity == 1
+
+    # Try to delete one item
+    if item.dispenseOneItem(isLast):
+        # Log the purchase in the history
+        history = History(user=request.user, hItemType=item.itemType, hItemPrice=item.itemPrice)
+        history.save()
+
+        return render(request, 'thanksPage.html')
+
+    # Handle the case where the item couldn't be deleted, e.g., redirect to an error page or try again
+    return render(request, 'errorPage.html')
 
 
 # Renders the about page.
