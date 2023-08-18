@@ -1,0 +1,264 @@
+/* Importing static files and fonts */
+{% load static %}
+
+/* Define a primary color for the site */
+:root {
+    --primary-color: #146eb4; /* Amazon blue */
+}
+
+/* Font imports */
+@font-face {
+    font-family: "AmazonEmber";
+    src: url("../fonts/AmazonEmber_Rg.ttf");
+}
+
+@font-face {
+    font-family: "AmazonEmber-light";
+    src: url("../fonts/AmazonEmber_Lt.ttf");
+}
+
+@font-face {
+    font-family: "AmazonEmber-bold";
+    src: url("../fonts/AmazonEmber_Bd.ttf");
+}
+
+/* Global Styles */
+body {
+    font-family: AmazonEmber;
+    text-align: left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #f4f4f4; /* Lighter background for a cleaner look */
+}
+
+/* Text Styles */
+h1, h2 {
+    font-family: AmazonEmber;
+    color: #6F4827; /* Amazon's signature color */
+    text-align: left;
+}
+
+strong {
+    font-family: AmazonEmber-bold;
+    text-align: left;
+}
+
+/* Navbar Styles */
+.navbar-brand {
+    font-size: 170%;
+    padding: 18px 15px 0 28px;
+    background-image: url(../image/amazonlogo.png);
+    background-repeat: no-repeat;
+    background-size: 26px 30px;
+    background-position: 0 12px;
+}
+
+.navbar-nav {
+    padding-top: 4px;
+}
+
+/* Table Styles */
+.table, .table-warning, .table-bordered {
+    background-color: white;
+    border-color: transparent;
+}
+
+/* Panel Styles */
+.panel-body {
+    background-color: transparent;
+}
+
+/* Button Styles */
+.btn-warning, .btn-secondary {
+    min-width: 6em;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: lightgray;
+    color: black;
+    border-color: grey;
+}
+
+.btn-secondary:hover {
+    background-color: darkgrey;
+}
+
+/* Media Queries for Responsive Design */
+@media only screen and (max-width: 799px) {
+    /* Styles for mobile devices */
+    .login-div {
+        background: transparent;
+        border-radius: 2px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 2em;
+        max-width: 85%;
+    }
+
+    .bar-div {
+        padding-top: 2em;
+        margin-left: 5%;
+        margin-right: 5%;
+        font-family: AmazonEmber;
+    }
+
+    .container-fluid {
+        max-width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 5em;
+    }
+
+    .navbar-brand {
+        font-size: 170%;
+        padding: 17px 15px 0 28px;
+        background-image: url(../image/amazonlogo.png);
+        background-repeat: no-repeat;
+        background-size: 26px 23px;
+        background-position: 0 12px;
+        margin-left: 0.5em;
+    }
+
+    #image {
+        width: 70%;
+        margin-left: 2.5em;
+    }
+
+    body {
+        text-align: left;
+        background-size: cover;
+        background-repeat: no-repeat;
+        font-family: AmazonEmber;
+        font-size: large;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    /* Styles for desktop devices */
+    .login-div {
+        background: transparent;
+        border-radius: 2px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 2em;
+        max-width: 25%;
+        font-family: AmazonEmber;
+        font-size: large;
+    }
+
+    .bar-div {
+        padding-top: 2em;
+        margin-left: 30%;
+        margin-right: 30%;
+        font-family: AmazonEmber;
+    }
+
+    .container-fluid {
+        max-width: 65%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 6em;
+    }
+
+    .navbar-brand {
+        font-size: 170%;
+        padding: 18px 15px 0 28px;
+        background-image: url(../image/amazonlogo.png);
+        background-repeat: no-repeat;
+        background-size: 26px 30px;
+        background-position: 0 12px;
+        margin-left: 25%;
+    }
+
+    #image {
+        width: 110%;
+        margin-left: 3em;
+    }
+
+    body {
+        text-align: left;
+        font-family: AmazonEmber;
+        font-size: large;
+    }
+}
+
+/* Alert Styles */
+.alert {
+    padding-top: 1em;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 90%;
+    border: 1px solid #FF9900; /* Amazon's signature orange */
+    background-color: #FFF6E5; /* Light orange background for a subtle alert */
+}
+
+/* Panel Styles */
+.panel-body {
+    background-color: transparent;
+}
+
+/* Price ID Styles */
+#priceId {
+    color: #FF9900; /* Amazon's signature orange */
+    float: right;
+    margin-right: 2em;
+    font-family: AmazonEmber;
+}
+
+/* Payment Price ID Styles */
+#paymentPriceId {
+    font-family: AmazonEmber;
+}
+
+/* Login Body Styles */
+#loginBody {
+    background-color: #FFF;
+}
+
+/* Erogation Body Styles */
+#erogationBody {
+    background-color: #FFF;
+}
+
+/* Number Styles */
+#number {
+    font-family: AmazonEmber;
+}
+
+/* Email Input Styles */
+#exampleInputEmail1 {
+    font-family: AmazonEmber;
+}
+
+/* Heading Title Styles */
+#heading-title {
+    text-align: left;
+    font-family: AmazonEmber;
+    font-size: 32px;
+    color: #6F4827; /* Amazon's signature brown */
+}
+
+/* Time Styles */
+.time {
+    font-family: AmazonEmber;
+    color: #6F4827; /* Amazon's signature brown */
+    float: right;
+    margin-right: 1em;
+}
+
+/* History Styles */
+.history {
+    color: #333; /* Dark grey for better readability */
+    border-color: #FF9900; /* Amazon's signature orange */
+    margin-top: 2%;
+    padding: 0.5em;
+    font-size: medium;
+    font-family: AmazonEmber;
+}
+
+.history-t {
+    color: #333; /* Dark grey for better readability */
+    font-family: AmazonEmber;
+}
