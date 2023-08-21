@@ -29,6 +29,9 @@ urlpatterns = [
     # Endpoint to authenticate user login details.
     path('login/authenticate/', views.authenticateView, name='authenticate'),
 
+    # Endpoint to log out the authenticated user.
+    path('logout/', views.logoutView, name='logout'),
+
     # User account page displaying purchase history and other details.
     path('account/', views.account, name='account'),
 

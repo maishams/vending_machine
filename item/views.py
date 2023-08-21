@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
@@ -143,6 +143,12 @@ def account(request):
     return render(request, 'account.html',
                   {'user': user, 'historyList': historyList, 'totalSpending': totalSpending,
                    'favouriteType': favouriteType})
+
+# Logs out the authenticated user and redirects them to the index page.
+@login_required
+def logoutView(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
 
 
 # Deletes the purchase history of the authenticated user.
