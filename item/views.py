@@ -154,23 +154,31 @@ def logoutView(request):
 # Deletes the purchase history of the authenticated user.
 @login_required
 def cleanHistory(request):
-    user = request.user
-    # If the request method is POST, it means the user has confirmed the deletion.
-    if request.method == 'POST':
-        # Fetch all history records associated with the user.
-        historyList = History.objects.filter(user=user)
+    if request.user.is_staff:
+        user = request.user
+        # If the request method is POST, it means the user has confirmed the deletion.
+        if request.method == 'POST':
+            # Fetch all history records associated with the user.
+            historyList = History.objects.filter(user=user)
 
-        # Delete each history record.
-        for history in historyList:
-            history.clean()
+            # Delete each history record.
+            for history in historyList:
+                history.clean()
 
-        # Redirect the user to the previous page they were on.
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            # Redirect the user to the previous page they were on.
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            return render(request, 'errorPage.html',
+                          {'error_message': "You do not have permission to delete purchase history."})
 
 
 # Shows dashboard of trends of usage of the vending machine
 @login_required
 def dashboard(request):
+    if not request.user.is_staff:
+        # Restrict access if the user is not an admin
+        return render(request, 'errorPage.html', {'error_message': "Access denied."})
+
     # Fetch start and end dates from the request
     start_date_str = request.GET.get('start_date', None)
     end_date_str = request.GET.get('end_date', None)
