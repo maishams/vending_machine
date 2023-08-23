@@ -20,14 +20,12 @@
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="{% static '/js/bootstrap.min.js' %}"></script>
     <script>
-        function showPaymentModal() {
-            document.getElementById('paymentModal').style.display = 'block';
-            document.getElementById('paymentOverlay').style.display = 'block';
+        function showModal() {
+            document.querySelector('modal').style.display = 'block';
         }
 
-        function closePaymentModal() {
-            document.getElementById('paymentModal').style.display = 'none';
-            document.getElementById('paymentOverlay').style.display = 'none';
+        function closeModal() {
+            document.querySelector('modal').style.display = 'none';
         }
     </script>
 </head>
@@ -108,9 +106,14 @@
                             <div class="panel-body"><p>{{ item.itemDescription }}</p></div>
                         </div>
                     </div>
+                    <div class="col-lg-3">
+                        {% if item.itemImage != None %}
+                            <img id="image" src="{{ item.itemImage.url }}" alt="Image of our item item">
+                        {% endif %}
+                    </div>
                 </div>
 
-                <input type="button" class="btn-warning btn-lg" name="id" value="Pay" onclick="showPaymentModal()">
+                <input type="button" class="btn-warning btn-lg" name="id" value="Pay" onclick="showModal()">
                 <a class="nounderline" href="{% url 'index' %}">
                     <button type="button" class="btn-secondary btn-lg">
                         Cancel
@@ -118,23 +121,17 @@
                 </a>
 
                 <!-- Payment Notification Modal -->
-                <div id="paymentModal"
-                     style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, -50%); z-index:1000; background-color:white; padding:20px; border:1px solid #ccc;">
+                <modal>
                     <h2>Please be frugal. The item may be free to you, but it costs Amazon money. Would you like to
                         proceed?</h2>
                     <p id="paymentMessage"></p>
                     <input type="submit" value="Yes, Proceed">
-                    <button type="button" onclick="closePaymentModal()">Close</button>
-                </div>
-
-                <!-- Overlay to darken the background when modal is open -->
-                <div id="paymentOverlay"
-                     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
-
+                    <button type="button" onclick="closeModal()">Close</button>
+                </modal>
             </div>
         </div>
     </div>
 </form>
-</body>
 
+</body>
 </html>

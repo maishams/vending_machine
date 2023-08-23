@@ -24,6 +24,7 @@ class InsertItemAdmin(admin.ModelAdmin):
         ('EquipmentDescription', {'fields': ['itemDescription']}),
         ('EquipmentPrice', {'fields': ['itemPrice']}),
         ('EquipmentQuantity', {'fields': ['itemQuantity']}),
+        ('Image', {'fields': ['itemImage']}),
     ]
 
     # Define columns to display in the admin list view

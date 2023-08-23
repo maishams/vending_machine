@@ -1,5 +1,10 @@
 /* Importing static files and fonts */
-{% load static %}
+{
+%
+load
+static
+%
+}
 
 /* Define a primary color for the site */
 :root {
@@ -261,4 +266,16 @@ strong {
 .history-t {
     color: #333; /* Dark grey for better readability */
     font-family: AmazonEmber;
+}
+
+modal {
+    display: none;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
 }

@@ -35,4 +35,4 @@ urlpatterns = [
     # If the user accesses the base URL, redirect to the 'item/' path.
     re_path(r'^$', RedirectView.as_view(url='/item/')),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

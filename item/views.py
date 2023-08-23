@@ -8,15 +8,17 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from VendingMachine import settings
 from .models import Item, History
 
 
 # Renders the index page with a list of all items, their types, prices, and total quantity.
 def index(request):
-    item_list = Item.objects.all().values('id', 'itemType', 'itemPrice').annotate(
+    item_list = Item.objects.all().values('id', 'itemType', 'itemPrice', 'itemImage').annotate(
         itemQuantity=Sum('itemQuantity'))
     context = {
-        'item_list': item_list
+        'item_list': item_list,
+        'MEDIA_URL': settings.MEDIA_URL
     }
     return render(request, 'index.html', context)
 
