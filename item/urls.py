@@ -21,13 +21,13 @@ urlpatterns = [
     path('registration/', views.registration, name='registration'),
 
     # Endpoint to validate user registration details.
-    path('registration/validateUser', views.validateUser, name='validateUser'),
+    path('registration/validateUser', views.validateRegistrationDetails, name='validateUser'),
 
     # User login page.
-    path('login/', views.log, name='log'),
+    path('login/', views.loginView, name='log'),
 
     # Endpoint to authenticate user login details.
-    path('login/authenticate/', views.authenticateView, name='authenticate'),
+    path('login/authenticate/', views.authenticateUser, name='authenticate'),
 
     # Endpoint to log out the authenticated user.
     path('logout/', views.logoutView, name='logout'),

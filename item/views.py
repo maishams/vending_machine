@@ -73,7 +73,7 @@ def registration(request):
 
 
 # Validates user registration by checking if the username already exists and if the passwords match.
-def validateUser(request):
+def validateRegistrationDetails(request):
     context = {'registrationFailed': False}
 
     if request.method == 'POST':
@@ -101,18 +101,18 @@ def validateUser(request):
             user = User(username=username, first_name=name, last_name=lastName)
             user.set_password(password)
             user.save()
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponseRedirect(reverse(loginView))
 
     return render(request, 'registration.html', context)
 
 
 # Renders the login page. Displays an error message if login fails.
-def log(request, loginFailed=False):
+def loginView(request, loginFailed=False):
     return render(request, 'login.html', {'loginFailed': loginFailed})
 
 
 # Authenticates user credentials and logs them in if valid.
-def authenticateView(request):
+def authenticateUser(request):
     if request.method == 'POST':
         username = request.POST.get('user')
         password = request.POST.get('password')
@@ -120,7 +120,7 @@ def authenticateView(request):
 
         # If user is authenticated, log them in and redirect to index.
         if user:
-            login(request, user)
+            loginView(request, user)
             return HttpResponseRedirect(reverse('index'))
 
         # If authentication fails, render the login page with an error message.

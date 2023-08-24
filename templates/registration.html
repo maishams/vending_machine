@@ -20,17 +20,10 @@
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/custom.js' %}"></script>
 </head>
 
-<body id="loginBody">
-<!-- Registration Failed Alert Script -->
-<script>
-    $(document).ready(function () {
-        $("#loginFailed").fadeTo(2000, 500).slideUp(500, function () {
-            $("#loginFailed").slideUp(500);
-        });
-    });
-</script>
+<body>
 <!-- Navigation Bar -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -112,20 +105,18 @@
             </div>
         </div>
     </form>
-</div>
 
-<!-- Registration Failed Alert -->
-<div class="alert">
-    {% if registrationFailed is True %}
-        <div id="loginFailed" class="alert alert-danger" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="alert-heading">Registration Error</h4>
-            <p>Existing user or confirm password mismatch. Password must contain more than 8 characters.</p>
-        </div>
+    <!-- Registration Failure Modal -->
+    <modal>
+        <h2>{{ error_message }}</h2>
+        <button type="button" onclick="closeModal()">Retry</button>
+    </modal>
+
+    {% if registrationFailed %}
+        <script>showModal()</script>
     {% endif %}
-</div>
-</body>
 
+</div>
+
+</body>
 </html>
