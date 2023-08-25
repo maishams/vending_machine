@@ -120,7 +120,7 @@ def authenticateUser(request):
 
         # If user is authenticated, log them in and redirect to index.
         if user:
-            loginView(request, user)
+            login(request, user)
             return HttpResponseRedirect(reverse('index'))
 
         # If authentication fails, render the login page with an error message.
