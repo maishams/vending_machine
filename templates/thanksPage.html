@@ -9,7 +9,7 @@
     <!-- Title -->
     <title>Amazon LHR16 Vending Machine - Thank You</title>
 
-     <!-- Static Files -->
+    <!-- Static Files -->
     {% load static %}
 
     <!-- Stylesheets -->
@@ -21,7 +21,18 @@
     <script src="{% static '/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/js/shoppingCart.js' %}"></script>
     <script src="{% static '/js/bootbox.min.js' %}"></script>
+    <!-- Script for Loading Screen, Thank You Message, and Continue Button -->
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#heading-title").text("Thank You!");
+                $("#thank-you-message").show();
+                $("#continueButton").show();
+            }, 3000);
+        });
+    </script>
 </head>
+
 <!-- Navigation Bar -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -63,49 +74,25 @@
 </nav>
 
 <body>
-    <!-- Thank You Panel -->
-    <div class="container-fluid">
-        <div class="panel panel-warning">
-            <div class="panel-heading">
-                <h1 id="heading-title">Thank You!</h1>
-            </div>
-            <div id="panel-index-body" class="panel-body">
-                Thank you for choosing Amazon LHR16 Vending Machine. Your product will be dispensed shortly.
-                <br>
-                <br>
-                <a class="nounderline" href="{% url 'index' %}">
-                    <button id="continueButton" type="button" class="btn-warning btn-lg">
-                        Continue shopping
-                    </button>
-                </a>
-            </div>
+<!-- Thank You Panel -->
+<div class="container-fluid">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h1 id="heading-title" class="loading-screen">Loading...</h1>
+        </div>
+        <div id="panel-index-body" class="panel-body">
+            <p id="thank-you-message" style="display: none;">Your item has been dispensed! Thank you for using Amazon
+                LHR16 Vending Machine.</p>
+            <br>
+            <br>
+            <a class="nounderline" href="{% url 'index' %}">
+                <button id="continueButton" type="button" class="btn-warning btn-lg" style="display: none;">
+                    Continue shopping
+                </button>
+            </a>
         </div>
     </div>
+</div>
 
-    <!-- Success Alert -->
-    <div class="alert">
-        <div id="success" class="alert alert-success" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="alert-heading">Success!</h4>
-            <p>Your purchase has been successful.</p>
-        </div>
-    </div>
-
-    <!-- Script for Success Alert and Continue Button -->
-    <script>
-        $(document).ready(function() {
-            $("#success").fadeTo(2000, 500).slideUp(500, function() {
-                $("#success").slideUp(500);
-            });
-
-            $("#continueButton").hide();
-            setTimeout(function() {
-                $("#continueButton").show();
-            }, 3000);
-        });
-    </script>
 </body>
-
 </html>
