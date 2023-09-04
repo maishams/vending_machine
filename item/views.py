@@ -146,6 +146,7 @@ def account(request):
                   {'user': user, 'historyList': historyList, 'totalSpending': totalSpending,
                    'favouriteType': favouriteType})
 
+
 # Logs out the authenticated user and redirects them to the index page.
 @login_required
 def logoutView(request):
@@ -209,30 +210,23 @@ def dashboard(request):
         'end_date': end_date
     }
 
-    # Fetch the count of each itemDescription bought
-    purchases_per_description = History.objects.values('hItemType').annotate(total=Count('hItemType'))
-    for purchase in purchases_per_description:
-        item_description = Item.objects.filter(itemType=purchase['hItemType']).first().itemDescription
-        purchase['itemDescription'] = item_description
+    # Fetch the top 10 users who have bought items
+    top_users_data = History.objects.values('user_id').annotate(
+        total_spent=Sum('hItemPrice'),
+        items_bought=Count('hItemType')
+    ).order_by('-total_spent')[:10]
 
-        # Fetch the top 10 users who have bought items
-        top_users_data = History.objects.values('user_id').annotate(
-            total_spent=Sum('hItemPrice'),
-            items_bought=Count('hItemType')
-        ).order_by('-total_spent')[:10]
-
-        top_users = []
-        for user_data in top_users_data:
-            user = User.objects.get(id=user_data['user_id'])
-            top_users.append({
-                'username': user.username,
-                'total_spent': user_data['total_spent'],
-                'items_bought': user_data['items_bought']
-            })
-
-        context.update({
-            'purchases_per_description': purchases_per_description,
-            'top_users': top_users
+    top_users = []
+    for user_data in top_users_data:
+        user = User.objects.get(id=user_data['user_id'])
+        top_users.append({
+            'username': user.username,
+            'total_spent': user_data['total_spent'],
+            'items_bought': user_data['items_bought']
         })
 
-        return render(request, 'dashboard.html', context)
+    context.update({
+        'top_users': top_users
+    })
+
+    return render(request, 'dashboard.html', context)
