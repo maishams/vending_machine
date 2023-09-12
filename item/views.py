@@ -170,9 +170,9 @@ def cleanHistory(request):
 
             # Redirect the user to the previous page they were on.
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        else:
-            return render(request, 'errorPage.html',
-                          {'error_message': "You do not have permission to delete purchase history."})
+    else:
+        return render(request, 'errorPage.html',
+                      {'error_message': "You do not have permission to delete purchase history."})
 
 
 # Shows dashboard of trends of usage of the vending machine
