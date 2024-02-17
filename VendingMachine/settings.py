@@ -27,6 +27,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+# Use HTTPS for cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 ALLOWED_HOSTS = ['52.207.62.209', 'vending-machine.maisha.me', 'localhost', '127.0.0.1']
 
 # Application definition
