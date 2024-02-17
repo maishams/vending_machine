@@ -1,21 +1,40 @@
 from django.contrib import admin
 from .models import Item, History
 from django.db.models import F
+from django.contrib.admin import AdminSite
+
+
+def has_permission(self, request):
+    # Add logic to check if user is authorized
+    return request.user.is_active and request.user.is_staff and request.user.is_superuser
+
 
 # Define an admin action to add 10 to the item quantity for selected items
 def add10(modeladmin, request, queryset):
-    queryset.update(itemQuantity=F('itemQuantity') + 10)
+    if has_permission(request):
+        queryset.update(itemQuantity=F('itemQuantity') + 10)
+
+
 add10.short_description = "Add 10 items"
+
 
 # Define an admin action to add 100 to the item quantity for selected items
 def add100(modeladmin, request, queryset):
-    queryset.update(itemQuantity=F('itemQuantity') + 100)
+    if has_permission(request):
+        queryset.update(itemQuantity=F('itemQuantity') + 100)
+
+
 add100.short_description = "Add 100 items"
+
 
 # Define an admin action to set the item quantity to 0 for selected items
 def emptyitems(modeladmin, request, queryset):
-    queryset.update(itemQuantity=0)
+    if has_permission(request):
+        queryset.update(itemQuantity=0)
+
+
 emptyitems.short_description = "Empty items"
+
 
 # Define a custom admin class for the Item model
 class InsertItemAdmin(admin.ModelAdmin):
@@ -38,8 +57,10 @@ class InsertItemAdmin(admin.ModelAdmin):
     # Define default ordering for the admin list view
     ordering = ['id']
 
+
 # Register the Item model with the custom admin class
 admin.site.register(Item, InsertItemAdmin)
+
 
 # Define a custom admin class for the History model
 class InsertHistoryAdmin(admin.ModelAdmin):
@@ -59,6 +80,7 @@ class InsertHistoryAdmin(admin.ModelAdmin):
     search_fields = ['user', 'hItemType']
     # Define default ordering for the admin list view
     ordering = ['-purchaseTime']
+
 
 # Register the History model with the custom admin class
 admin.site.register(History, InsertHistoryAdmin)
