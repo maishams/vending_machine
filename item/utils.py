@@ -1,3 +1,14 @@
+from datetime import datetime
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.db.models import Sum, Count
+from django.shortcuts import render
+
+from VendingMachine import settings
+from item.models import History, Item
+
+
 def get_item_list_with_quantity():
     """Retrieve a list of items with their quantities."""
     return Item.objects.all().values('id', 'itemType', 'itemPrice', 'itemImage').annotate(

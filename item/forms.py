@@ -1,4 +1,13 @@
 # Utility Functions and Business Logic for Vending Machine Application
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+
+from item.utils import is_password_strong
+from item.views import render_login_error, login_view
+
 
 def perform_authentication(request, details):
     """Authenticate a user based on provided details."""
@@ -15,7 +24,7 @@ def validate_registration_details(request):
         validation_result = validate_details(registration_details)
         if validation_result['is_valid']:
             create_account(registration_details)
-            return HttpResponseRedirect(reverse(loginView))
+            return HttpResponseRedirect(reverse(login_view))
         else:
             context = {
                 'registrationFailed': True,

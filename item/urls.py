@@ -22,20 +22,20 @@ urlpatterns = [
     path('registration/', views.render_registration_page, name='registration'),
 
     # Endpoint to validate user registration details.
-    path('registration/validateUser', views.validate_registration_details, name='validateUser'),
+    path('registration/validateUser', forms.validate_registration_details, name='validateUser'),
 
     # User login page.
-    path('login/', views.loginView, name='log'),
+    path('login/', views.login_view, name='log'),
 
     # Endpoint to authenticate user login details.
     path('login/authenticate/', forms.authenticate_user, name='authenticate'),
 
     # Endpoint to log out the authenticated user.
-    path('logout/', views.logoutView, name='logout'),
+    path('logout/', views.logout_view, name='logout'),
 
     # User account page displaying purchase history and other details.
     path('account/', views.account, name='account'),
 
     # Endpoint to clear the user's purchase history.
-    path('account/clean', views.cleanHistory, name='cleanHistory'),
+    path('account/clean', views.clean_history, name='cleanHistory'),
 ]

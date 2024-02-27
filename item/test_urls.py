@@ -3,7 +3,6 @@ from django.urls import reverse, resolve
 
 from item import views
 from item import forms
-from item import utils
 
 
 class TestUrls(TestCase):
@@ -38,7 +37,7 @@ class TestUrls(TestCase):
 
     def test_login_url(self):
         path = reverse('log')
-        self.assertEqual(resolve(path).func, views.loginView)
+        self.assertEqual(resolve(path).func, views.loginiew)
 
     def test_authenticate_url(self):
         path = reverse('authenticate')
@@ -46,7 +45,7 @@ class TestUrls(TestCase):
 
     def test_logout_url(self):
         path = reverse('logout')
-        self.assertEqual(resolve(path).func, views.logoutView)
+        self.assertEqual(resolve(path).func, views.logout_view)
 
     def test_account_url(self):
         path = reverse('account')
@@ -54,4 +53,4 @@ class TestUrls(TestCase):
 
     def test_cleanHistory_url(self):
         path = reverse('cleanHistory')
-        self.assertEqual(resolve(path).func, views.cleanHistory)
+        self.assertEqual(resolve(path).func, views.clean_history)

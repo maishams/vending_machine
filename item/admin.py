@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Item, History
 from django.db.models import F
-from django.contrib.admin import AdminSite
 
 
 def has_permission(user):

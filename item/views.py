@@ -1,17 +1,9 @@
-from datetime import datetime
-
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.db.models import Sum, Count
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse
 
-from VendingMachine import settings
-from .models import Item, History
-from .forms import *
-from .utils import *
+from item.utils import *
 
 
 def index(request):
@@ -75,7 +67,7 @@ def render_registration_page(request):
     return render(request, 'registration.html')
 
 
-def loginView(request, loginFailed=False):
+def login_view(request, loginFailed=False):
     """Renders the login page. Displays an error message if login fails."""
     return render(request, 'login.html', {'loginFailed': loginFailed})
 
@@ -102,7 +94,7 @@ def account(request):
 
 
 @login_required
-def logoutView(request):
+def logout_view(request):
     """Logs out the authenticated user and redirects them to the index page."""
     logout(request)
     return HttpResponseRedirect(reverse('index'))
@@ -146,13 +138,11 @@ def dashboard(request):
 
     return render(request, 'dashboard.html', context)
 
+
 # Deletes the purchase history of the authenticated user.
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 
 @login_required
-def cleanHistory(request):
+def clean_history(request):
     if not is_staff_user(request.user):
         return render_error_page(request, "You do not have permission to delete purchase history.")
 
@@ -160,6 +150,6 @@ def cleanHistory(request):
         delete_user_history(request.user)
         return redirect_to_referer(request)
 
+
 def redirect_to_referer(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))  # Fallback to home if referer is not set.
-
