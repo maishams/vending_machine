@@ -14,7 +14,7 @@ class ItemModelTest(TestCase):
             itemQuantity=5
         )
 
-    def test_delete_one_item(self):
+    def test_dispense_one_item(self):
         self.assertTrue(self.item.dispense_one_item(False))
         self.assertEqual(self.item.itemQuantity, 4)
 
