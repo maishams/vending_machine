@@ -37,7 +37,7 @@ class TestUrls(TestCase):
 
     def test_login_url(self):
         path = reverse('log')
-        self.assertEqual(resolve(path).func, views.loginiew)
+        self.assertEqual(resolve(path).func, views.login_view)
 
     def test_authenticate_url(self):
         path = reverse('authenticate')

@@ -7,7 +7,7 @@ def has_permission(user):
     """
     Check if the user has the necessary permissions.
     """
-    # Logic to check if user is staff, and a superuser
+    # Logic to check if user is staff
     return user.is_staff
 
 

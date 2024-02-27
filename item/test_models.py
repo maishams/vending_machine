@@ -27,7 +27,6 @@ class ItemModelTest(TestCase):
         self.assertEqual(self.item.itemQuantity, 0)
 
 class HistoryModelTest(TestCase):
-
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.history = History.objects.create(

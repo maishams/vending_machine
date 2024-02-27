@@ -57,7 +57,7 @@ def get_item_and_status(itemId):
 
 def try_dispense_item(item, is_last):
     """Attempt to dispense one item, considering if it's the last one."""
-    return item.dispenseOneItem(is_last)
+    return item.dispense_one_item(is_last)
 
 
 def log_purchase_history(user, item):
