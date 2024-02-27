@@ -15,11 +15,11 @@ class ItemModelTest(TestCase):
         )
 
     def test_delete_one_item(self):
-        self.assertTrue(self.item.dispenseOneItem(False))
+        self.assertTrue(self.item.dispense_one_item(False))
         self.assertEqual(self.item.itemQuantity, 4)
 
     def test_add_quantity(self):
-        self.item.addQuantity(3)
+        self.item.add_quantity(3)
         self.assertEqual(self.item.itemQuantity, 8)
 
     def test_empty(self):

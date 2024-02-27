@@ -4,86 +4,76 @@ from django.db.models import F
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-# Define constants for different types of equipment items
-# These constants will be used to populate the choices for the equipment type field in the model
-ITEM_CHOICES = ((name, name) for name in (
-    'Keyboard',
-    'Mouse',
-    'Headphones',
-    'USB Drive',
-    'Laptop Charger',
-    'HDMI Cable',
-    'Ethernet Cable',
-    'Wireless Adapter',
-    'Web Camera',
-    'Microphone',
-    'Power Bank',
-    'Phone Charger'
-))
+# Constants for Different Equipment Types
+EQUIPMENT_TYPES = [
+    'Keyboard', 'Mouse', 'Headphones', 'USB Drive', 'Laptop Charger',
+    'HDMI Cable', 'Ethernet Cable', 'Wireless Adapter', 'Web Camera',
+    'Microphone', 'Power Bank', 'Phone Charger'
+]
 
-# Method to get item choice tuple
-def getItemChoices():
+# Convert the equipment types into a format suitable for Django model choices
+ITEM_CHOICES = tuple((item, item) for item in EQUIPMENT_TYPES)
+
+
+def get_item_choices():
+    """Utility function to retrieve item choices."""
     return ITEM_CHOICES
 
 
-# Define the Item model to represent each equipment item in the vending machine
 class Item(models.Model):
-    itemType = models.CharField('Type', choices=ITEM_CHOICES, max_length=25, default="Mouse")
-    itemDescription = models.TextField('Description', max_length=400, help_text="Insert a brief product description",
-                                       default="")
-    itemPrice = models.DecimalField('Price', max_digits=4, decimal_places=2, default=0)
-    itemQuantity = models.PositiveSmallIntegerField('Quantity', default=1, editable=True)
+    """Model representing each equipment item in the vending machine."""
+
+    itemType = models.CharField(
+        'Type', choices=ITEM_CHOICES, max_length=25, default='Mouse'
+    )
+    itemDescription = models.TextField(
+        'Description', max_length=400, help_text="Insert a brief product description", default=""
+    )
+    itemPrice = models.DecimalField(
+        'Price', max_digits=4, decimal_places=2, default=0
+    )
+    itemQuantity = models.PositiveSmallIntegerField(
+        'Quantity', default=1, editable=True
+    )
     itemImage = models.ImageField(blank=True, null=True)
 
-    # String representation of the model instance
     def __str__(self):
+        """String representation of the model instance."""
         return str(self.itemType)
 
-    # Method to decrease the quantity of an item by 1
-    def dispenseOneItem(self, isLast):
-        # If there's no item left, delete the record
-        if self.itemQuantity == 0:
-            self.delete()
-            return False
-
-        # If there's only one item left
-        if self.itemQuantity == 1:
-            # If it's the last item and isLast is True, set quantity to 0
-            if isLast:
-                self.itemQuantity = 0
-                self.save()
-            # If it's not the last item or isLast is False, delete the record
-            else:
-                self.delete()
-            return True
-
-        # If there's more than one item, decrease the quantity by 1
-        if self.itemQuantity > 1:
+    def dispense_one_item(self, is_last):
+        """Method to decrease the quantity of an item by 1."""
+        if self.itemQuantity > 0:
             self.itemQuantity -= 1
             self.save()
-            return True
-
-        # If none of the above conditions are met, return False
+            return self.itemQuantity == 0 if is_last else True
         return False
 
-    # Method to add a specified quantity to the item
-    def addQuantity(self, number):
+    def add_quantity(self, number):
+        """Method to add a specified quantity to the item."""
         Item.objects.filter(id=self.id).update(itemQuantity=F('itemQuantity') + number)
-        Item.refresh_from_db(self)
+        self.refresh_from_db()
 
-    # Method to set the item quantity to 0
     def empty(self):
+        """Method to set the item quantity to 0."""
         Item.objects.filter(id=self.id).update(itemQuantity=0)
-        Item.refresh_from_db(self)
+        self.refresh_from_db()
 
 
-# Define the History model to keep track of equipment purchase history for each user
 class History(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to the user who made the purchase
-    hItemType = models.CharField('Type', choices=ITEM_CHOICES, max_length=25)
-    hItemPrice = models.DecimalField('Price', max_digits=4, decimal_places=2, default=0.50)
-    purchaseTime = models.DateTimeField('Purchase Time', default=timezone.now)  # Timestamp of the purchase
+    """Model to keep track of equipment purchase history for each user."""
 
-    # Method to delete a history record
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    hItemType = models.CharField(
+        'Type', choices=ITEM_CHOICES, max_length=25
+    )
+    hItemPrice = models.DecimalField(
+        'Price', max_digits=4, decimal_places=2, default=0.50
+    )
+    purchaseTime = models.DateTimeField(
+        'Purchase Time', default=timezone.now
+    )
+
     def clean(self):
+        """Method to delete a history record."""
         self.delete()

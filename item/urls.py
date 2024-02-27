@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import forms
 
 urlpatterns = [
     # Main page displaying all items.
@@ -12,22 +13,22 @@ urlpatterns = [
     path('<int:itemId>/payment/pay/', views.pay, name='pay'),
 
     # About page of the website.
-    path('about/', views.about, name='about'),
+    path('about/', views.render_about_page, name='about'),
 
     # Contact page of the website.
-    path('contact/', views.contact, name='contact'),
+    path('contact/', views.render_contact_page, name='contact'),
 
     # User registration page.
-    path('registration/', views.registration, name='registration'),
+    path('registration/', views.render_registration_page, name='registration'),
 
     # Endpoint to validate user registration details.
-    path('registration/validateUser', views.validateRegistrationDetails, name='validateUser'),
+    path('registration/validateUser', views.validate_registration_details, name='validateUser'),
 
     # User login page.
     path('login/', views.loginView, name='log'),
 
     # Endpoint to authenticate user login details.
-    path('login/authenticate/', views.authenticateUser, name='authenticate'),
+    path('login/authenticate/', forms.authenticate_user, name='authenticate'),
 
     # Endpoint to log out the authenticated user.
     path('logout/', views.logoutView, name='logout'),

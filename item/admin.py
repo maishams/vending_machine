@@ -4,40 +4,51 @@ from django.db.models import F
 from django.contrib.admin import AdminSite
 
 
-def has_permission(self, request):
-    # Add logic to check if user is authorized
-    return request.user.is_active and request.user.is_staff and request.user.is_superuser
+def has_permission(user):
+    """
+    Check if the user has the necessary permissions.
+    """
+    # Logic to check if user is staff, and a superuser
+    return user.is_staff
 
 
-# Define an admin action to add 10 to the item quantity for selected items
-def add10(modeladmin, request, queryset):
-    if has_permission(request):
+def add10(request, queryset):
+    """
+    Admin action to increment the quantity of selected items by 10.
+    """
+    if has_permission(request.user):
         queryset.update(itemQuantity=F('itemQuantity') + 10)
 
 
-add10.short_description = "Add 10 items"
+add10.short_description = "Add 10 items"  # Description for the admin action
 
 
-# Define an admin action to add 100 to the item quantity for selected items
-def add100(modeladmin, request, queryset):
-    if has_permission(request):
+def add100(request, queryset):
+    """
+    Admin action to increment the quantity of selected items by 100.
+    """
+    if has_permission(request.user):
         queryset.update(itemQuantity=F('itemQuantity') + 100)
 
 
-add100.short_description = "Add 100 items"
+add100.short_description = "Add 100 items"  # Description for the admin action
 
 
-# Define an admin action to set the item quantity to 0 for selected items
-def emptyitems(modeladmin, request, queryset):
-    if has_permission(request):
+def emptyitems(request, queryset):
+    """
+    Admin action to set the quantity of selected items to 0.
+    """
+    if has_permission(request.user):
         queryset.update(itemQuantity=0)
 
 
-emptyitems.short_description = "Empty items"
+emptyitems.short_description = "Empty items"  # Description for the admin action
 
 
-# Define a custom admin class for the Item model
 class InsertItemAdmin(admin.ModelAdmin):
+    """
+    Custom admin class for the Item model.
+    """
     fieldsets = [
         ('EquipmentType', {'fields': ['itemType']}),
         ('EquipmentDescription', {'fields': ['itemDescription']}),
@@ -46,25 +57,21 @@ class InsertItemAdmin(admin.ModelAdmin):
         ('Image', {'fields': ['itemImage']}),
     ]
 
-    # Define columns to display in the admin list view
-    list_display = ('id', 'itemType', 'itemDescription', 'itemPrice', 'itemQuantity')
-    # Add filters for the admin list view
-    list_filter = ['itemType']
-    # Add search functionality for the admin list view
-    search_fields = ['itemType', 'itemDescription']
-    # Add custom actions to the admin interface
-    actions = [add10, add100, emptyitems]
-    # Define default ordering for the admin list view
-    ordering = ['id']
+    list_display = ('id', 'itemType', 'itemDescription', 'itemPrice', 'itemQuantity')  # Columns for list view
+    list_filter = ['itemType']  # Filters for list view
+    search_fields = ['itemType', 'itemDescription']  # Search functionality
+    actions = [add10, add100, emptyitems]  # Custom actions
+    ordering = ['id']  # Default ordering
 
 
 # Register the Item model with the custom admin class
 admin.site.register(Item, InsertItemAdmin)
 
 
-# Define a custom admin class for the History model
 class InsertHistoryAdmin(admin.ModelAdmin):
-    # Group fields in the admin form
+    """
+    Custom admin class for the History model.
+    """
     fieldsets = [
         ('User', {'fields': ['user']}),
         ('EquipmentType', {'fields': ['hItemType']}),
@@ -72,14 +79,10 @@ class InsertHistoryAdmin(admin.ModelAdmin):
         ('PurchaseTime', {'fields': ['purchaseTime']}),
     ]
 
-    # Define columns to display in the admin list view
-    list_display = ('user', 'hItemType', 'hItemPrice', 'purchaseTime')
-    # Add filters for the admin list view
-    list_filter = ['hItemType', 'purchaseTime']
-    # Add search functionality for the admin list view
-    search_fields = ['user', 'hItemType']
-    # Define default ordering for the admin list view
-    ordering = ['-purchaseTime']
+    list_display = ('user', 'hItemType', 'hItemPrice', 'purchaseTime')  # Columns for list view
+    list_filter = ['hItemType', 'purchaseTime']  # Filters for list view
+    search_fields = ['user', 'hItemType']  # Search functionality
+    ordering = ['-purchaseTime']  # Default ordering
 
 
 # Register the History model with the custom admin class

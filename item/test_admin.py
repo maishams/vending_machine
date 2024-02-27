@@ -13,6 +13,14 @@ class MockSuperUser:
     def has_perm(self):
         return True
 
+    @property
+    def is_staff(self):
+        return True
+
+    @property
+    def is_superuser(self):
+        return True
+
 
 request = MockRequest()
 request.user = MockSuperUser()
@@ -26,7 +34,7 @@ class TestAdminActions(TestCase):
 
     def test_add10_action(self):
         queryset = Item.objects.all()
-        add10(None, request, queryset)
+        add10(request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         self.assertEqual(self.item1.itemQuantity, 15)
@@ -34,7 +42,7 @@ class TestAdminActions(TestCase):
 
     def test_add100_action(self):
         queryset = Item.objects.all()
-        add100(None, request, queryset)
+        add100(request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         self.assertEqual(self.item1.itemQuantity, 105)
@@ -42,7 +50,7 @@ class TestAdminActions(TestCase):
 
     def test_emptyitems_action(self):
         queryset = Item.objects.all()
-        emptyitems(None, request, queryset)
+        emptyitems(request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         self.assertEqual(self.item1.itemQuantity, 0)
