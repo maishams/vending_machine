@@ -29,7 +29,7 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = ['vending-machine-env.eba-udiavty3.us-west-2.elasticbeanstalk.com', 'vending-machine.maisha.me',
-                 'localhost', '127.0.0.1']
+                 'localhost', '127.0.0.1', '172.31.19.88', '35.81.179.6']
 
 # Application definition
 
