@@ -22,14 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Use HTTPS for cookies
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['vending-machine-env.eba-udiavty3.us-west-2.elasticbeanstalk.com', 'vending-machine.maisha.me',
-                 'localhost', '127.0.0.1', '172.31.19.88', '35.81.179.6']
+ALLOWED_HOSTS = ['.elasticbeanstalk.com', 'vending-machine.maisha.me',
+                 'localhost', '127.0.0.1', '172.31.19.88', '35.81.179.6',
+                 '.amazonaws.com', '172.31.42.169']
+
 
 # Application definition
 
@@ -41,12 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'health_check',
-    'health_check.db',
-    'health_check.cache',
-    'health_check.storage',
     'storages',
 ]
+
+if os.environ.get('TESTING') == 'TRUE':
+    INSTALLED_APPS.append('sslserver')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

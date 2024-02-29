@@ -10,13 +10,11 @@ The vending_machine project is a Django-based web application designed specifica
 - Track purchase history for each user.
 - Admin dashboard to view usage trends.
 
-## Setup
+## Setup and Run Locally
 
 ### Prerequisites
 
 - Python
-- Django
-- SQLite (comes with Django)
 
 ### Installation
 
@@ -30,25 +28,33 @@ cd vending_machine
 2. Install the required packages:
 
 ```bash
-pip install django
+pip install -r requirements.txt
+```
+
+3. Set environment variables
+You will need to set the below variables in order to run the app locally. 
+Note: if you do not have the secret key, refer to [this](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
+```bash
+export DJANGO_SECRET_KEY=<secretkey>
+export TESTING=TRUE
 ```
 
 3. Set up the database:
 
-The project uses SQLite as its database. To set it up, run:
+The project uses SQLite as its database if run locally. To set it up, run:
 
 ```bash
 python manage.py migrate
 ```
 
-This will create a `db.sqlite3` file in the project directory.
+This will create a `db.sqlite3` file in the project directory. 
 
 ### Running the Application
 
 To run the application, use the `manage.py` script:
 
 ```bash
-python manage.py runserver
+python3 manage.py runsslserver
 ```
 
 The application will be accessible at `http://127.0.0.1:8000/`.
@@ -86,7 +92,3 @@ The application's views are defined in `item/views.py` and the corresponding URL
 - User registration and login pages.
 - User account page displaying purchase history.
 - Admin dashboard showing usage trends.
-
-## Contributing
-
-If you wish to contribute to this project, please fork the repository and submit a pull request.

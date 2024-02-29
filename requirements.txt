@@ -48,3 +48,4 @@ mysqlclient==2.2.4
 django-health-check==3.18.1
 django-storages==1.14.2
 boto3==1.34.51
+django-sslserver==0.22

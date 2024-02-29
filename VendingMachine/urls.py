@@ -32,9 +32,6 @@ urlpatterns = [
     # URL patterns for the 'item' app.
     path('item/', include('item.urls')),
 
-    # URL pattern for health for ElasticBeanstalk
-    path('health/', include('health_check.urls')),
-
     # If the user accesses the base URL, redirect to the 'item/' path.
     re_path(r'^$', RedirectView.as_view(url='/item/'))
 
