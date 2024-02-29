@@ -7,10 +7,10 @@ urlpatterns = [
     path('', views.index, name='index'),
 
     # Payment page for a specific item type.
-    path('<int:itemId>/payment/', views.payment, name='payment'),
+    path('<int:item_id>/payment/', views.payment, name='payment'),
 
     # Endpoint to process payment for a specific item type.
-    path('<int:itemId>/payment/pay/', views.pay, name='pay'),
+    path('<int:item_id>/payment/pay/', views.pay, name='pay'),
 
     # About page of the website.
     path('about/', views.render_about_page, name='about'),

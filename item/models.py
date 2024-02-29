@@ -47,12 +47,16 @@ class Item(models.Model):
             self.itemQuantity -= 1
             self.save()
             return self.itemQuantity == 0 if is_last else True
-        return False
+        else:
+            raise ValueError
 
     def add_quantity(self, number):
         """Method to add a specified quantity to the item."""
-        Item.objects.filter(id=self.id).update(itemQuantity=F('itemQuantity') + number)
-        self.refresh_from_db()
+        if number > 0:
+            Item.objects.filter(id=self.id).update(itemQuantity=F('itemQuantity') + number)
+            self.refresh_from_db()
+        else:
+            raise ValueError
 
     def empty(self):
         """Method to set the item quantity to 0."""
