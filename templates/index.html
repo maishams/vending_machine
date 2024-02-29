@@ -79,7 +79,7 @@
                         {% if item.itemQuantity == 0 %}
                             <button type="button" class="list-group-item disabled">
                                 <img src="{{ MEDIA_URL }}{{ item.itemImage }}" width="50" height="50">
-                                <font color="#808080">{{ item.itemType }}</font>
+                                <span style="color: #808080;">{{ item.itemType }}</span>
                                 <span class="badge badge-primary badge-pill">Not available</span>
                             </button>
                         {% else %}
@@ -87,7 +87,7 @@
                                 <button type="button" class="list-group-item">
                                     <img src="{{ MEDIA_URL }}{{ item.itemImage }}" width="50"
                                          height="50">
-                                    <font color="#6F4827">{{ item.itemType }}</font>
+                                    <span style="color: #6F4827;">{{ item.itemType }}</span>
                                     <span class="badge badge-primary badge-pill">{{ item.itemQuantity }}</span>
                                     <span id="priceId">{{ item.itemPrice }} £</span>
                                 </button>
