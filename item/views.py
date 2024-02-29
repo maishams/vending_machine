@@ -2,8 +2,13 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.shortcuts import render
+from django.db.models import Sum, Count
 
-from item.utils import *
+from item.utils import get_item_list_with_quantity, render_index_page, create_context_with_media_url, get_item_by_id, \
+    is_user_authenticated, render_login_page, item_exists, get_item_and_status, try_dispense_item, log_purchase_history, \
+    get_user_history, calculate_total_spending, determine_favourite_item_type, is_staff_user, get_date_range, \
+    filter_history_by_date, delete_user_history, get_top_users
 
 
 def index(request):
@@ -13,9 +18,9 @@ def index(request):
     return render_index_page(request, context)
 
 
-def payment(request, itemId):
+def payment(request, item_id):
     """Renders the payment page for a specific item type."""
-    item = get_item_by_id(itemId)
+    item = get_item_by_id(item_id)
     return render_payment_page(request, item)
 
 
@@ -24,15 +29,15 @@ def render_payment_page(request, item):
     return render(request, 'payment.html', {'item': item})
 
 
-def pay(request, itemId):
+def pay(request, item_id):
     """Processes the payment for a specific item type."""
     if not is_user_authenticated(request):
         return render_login_page(request)
 
-    if not item_exists(itemId):
+    if not item_exists(item_id):
         return render_error_page(request, "Item does not exist.")
 
-    item, is_last = get_item_and_status(itemId)
+    item, is_last = get_item_and_status(item_id)
 
     if try_dispense_item(item, is_last):
         log_purchase_history(request.user, item)
@@ -67,9 +72,9 @@ def render_registration_page(request):
     return render(request, 'registration.html')
 
 
-def login_view(request, loginFailed=False):
+def login_view(request, login_failed=False):
     """Renders the login page. Displays an error message if login fails."""
-    return render(request, 'login.html', {'loginFailed': loginFailed})
+    return render(request, 'login.html', {'loginFailed': login_failed})
 
 
 def render_login_error(request):

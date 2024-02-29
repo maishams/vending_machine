@@ -28,9 +28,9 @@ def render_index_page(request, context):
     return render(request, 'index.html', context)
 
 
-def get_item_by_id(itemId):
+def get_item_by_id(item_id):
     """Retrieve an item by its ID."""
-    return Item.objects.filter(id=itemId).first()
+    return Item.objects.filter(id=item_id).first()
 
 
 def is_user_authenticated(request):
@@ -43,14 +43,14 @@ def render_login_page(request):
     return render(request, 'login.html')
 
 
-def item_exists(itemId):
+def item_exists(item_id):
     """Check if an item exists by its ID."""
-    return Item.objects.filter(id=itemId).exists()
+    return Item.objects.filter(id=item_id).exists()
 
 
-def get_item_and_status(itemId):
+def get_item_and_status(item_id):
     """Retrieve an item and its status (if it's the last one)."""
-    item = Item.objects.get(id=itemId)
+    item = Item.objects.get(id=item_id)
     is_last = item.itemQuantity == 1
     return item, is_last
 
