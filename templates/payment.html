@@ -81,16 +81,21 @@
 
             <div id="panel-index-body" class="panel-body">
                 <table class="table">
-                    <tr class="table-warning">
-                        <td class="table-warning"><b>Type</b></td>
-                        <td class="table-warning"><b>Price</b></td>
+                    <caption>Item Details</caption>
+                    <thead class="table-warning">
+                    <tr>
+                        <th>Type</th>
+                        <th>Price</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td class="table-bordered">{{ item }}</td>
-                        <td id="paymentPriceId" class="table-bordered">{{ item.itemPrice }} €</td>
+                        <td id="paymentPriceId" class="table-bordered">{{ item.itemPrice }} £</td>
                     </tr>
+                    <!-- More rows can be added here -->
+                    </tbody>
                 </table>
-
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="panel panel-warning">
