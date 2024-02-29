@@ -1,0 +1,29 @@
+version: 0.2
+env:
+  secrets-manager:
+    LOGIN: prod/sonar:sonartoken
+    HOST: prod/sonar:HOST
+    Organization: prod/sonar:Organization
+    Project: prod/sonar:Project
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - apt-get update
+      - apt-get install -y jq
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip ./sonar-scanner-cli-5.0.1.3006-linux.zip -d /root/
+      - chmod +x /root/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+      - if [ -f /root/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner ]; then echo "sonar-scanner is correctly installed."; else echo "sonar-scanner installation failed."; exit 1; fi
+      - export PATH=$PATH:/root/sonar-scanner-5.0.1.3006-linux/bin/
+  pre_build:
+    commands:
+      - sonar-scanner -Dsonar.organization=$Organization -Dsonar.projectKey=$Project -Dsonar.sources=$CODEBUILD_SRC_DIR -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN
+      - sleep 5
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECTKEY > analysis.json
+      - cat analysis.json
+  build:
+    commands:
+      - echo Building Project
+      - echo Finished Building
