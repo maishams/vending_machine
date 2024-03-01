@@ -46,7 +46,7 @@ class TestAdminActions(TestCase):
     def test_add10_action(self):
         queryset = Item.objects.all()
         request.user = MockSuperUser()
-        add10(request, queryset)
+        add10(None, request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         self.assertEqual(self.item1.itemQuantity, 15)
@@ -55,7 +55,7 @@ class TestAdminActions(TestCase):
     def test_add10_action_not_admin(self):
         queryset = Item.objects.all()
         request.user = MockNormalUser()
-        add10(request, queryset)
+        add10(None, request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         # item1 should be 5, and item2 should be 15 as they should not have changed due to lack of perms
@@ -65,7 +65,7 @@ class TestAdminActions(TestCase):
     def test_add100_action(self):
         queryset = Item.objects.all()
         request.user = MockSuperUser()
-        add100(request, queryset)
+        add100(None, request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         self.assertEqual(self.item1.itemQuantity, 105)
@@ -74,7 +74,7 @@ class TestAdminActions(TestCase):
     def test_add100_action_not_admin(self):
         queryset = Item.objects.all()
         request.user = MockNormalUser()
-        add100(request, queryset)
+        add100(None, request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         # item1 should be 5, and item2 should be 15 as they should not have changed due to lack of perms
@@ -84,7 +84,7 @@ class TestAdminActions(TestCase):
     def test_emptyitems_action(self):
         queryset = Item.objects.all()
         request.user = MockSuperUser()
-        emptyitems(request, queryset)
+        emptyitems(None, request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         self.assertEqual(self.item1.itemQuantity, 0)
@@ -93,7 +93,7 @@ class TestAdminActions(TestCase):
     def test_emptyitems_action_not_admin(self):
         queryset = Item.objects.all()
         request.user = MockNormalUser()
-        emptyitems(request, queryset)
+        emptyitems(None, request, queryset)
         self.item1.refresh_from_db()
         self.item2.refresh_from_db()
         # item1 should be 5, and item2 should be 15 as they should not have changed due to lack of perms

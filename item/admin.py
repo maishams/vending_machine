@@ -11,7 +11,7 @@ def has_permission(user):
     return user.is_staff
 
 
-def add10(request, queryset):
+def add10(modeladmin, request, queryset):
     """
     Admin action to increment the quantity of selected items by 10.
     """
@@ -22,7 +22,7 @@ def add10(request, queryset):
 add10.short_description = "Add 10 items"  # Description for the admin action
 
 
-def add100(request, queryset):
+def add100(modeladmin, request, queryset):
     """
     Admin action to increment the quantity of selected items by 100.
     """
@@ -33,7 +33,7 @@ def add100(request, queryset):
 add100.short_description = "Add 100 items"  # Description for the admin action
 
 
-def emptyitems(request, queryset):
+def emptyitems(modeladmin, request, queryset):
     """
     Admin action to set the quantity of selected items to 0.
     """
