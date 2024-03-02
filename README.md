@@ -21,7 +21,7 @@ The vending_machine project is a Django-based web application designed specifica
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/maishams/vending_machine.git
+git clone https://github.com/maishams/VendingMachine
 cd vending_machine
 ```
 

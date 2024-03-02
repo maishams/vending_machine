@@ -4,11 +4,15 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
 from django.db.models import Sum, Count
+import logging
 
+from VendingMachine import settings
 from item.utils import get_item_list_with_quantity, render_index_page, create_context_with_media_url, get_item_by_id, \
     is_user_authenticated, render_login_page, item_exists, get_item_and_status, try_dispense_item, log_purchase_history, \
     get_user_history, calculate_total_spending, determine_favourite_item_type, is_staff_user, get_date_range, \
     filter_history_by_date, delete_user_history, get_top_users
+
+logger = logging.getLogger('watchtower-logger')
 
 
 def index(request):
@@ -26,7 +30,10 @@ def payment(request, item_id):
 
 def render_payment_page(request, item):
     """Renders the payment page."""
-    return render(request, 'payment.html', {'item': item})
+    return render(request, 'payment.html',
+                  {'item': item,
+                   'MEDIA_URL': settings.MEDIA_URL}
+                  )
 
 
 def pay(request, item_id):
@@ -53,6 +60,7 @@ def render_thanks_page(request):
 
 def render_error_page(request, error_message=None):
     """Renders the error page."""
+    logger.warning(error_message)
     return render(request, 'errorPage.html', {'error_message': error_message})
 
 
@@ -149,10 +157,12 @@ def dashboard(request):
 @login_required
 def clean_history(request):
     if not is_staff_user(request.user):
+        logger.warning(f"User {request.user} has attempted their history")
         return render_error_page(request, "You do not have permission to delete purchase history.")
 
     if request.method == 'POST':
         delete_user_history(request.user)
+        logger.info(f"User {request.user} has cleared their history")
         return redirect_to_referer(request)
 
 

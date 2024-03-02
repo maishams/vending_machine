@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+import boto3
+from boto3 import Session
 
 from item.apps import ItemConfig
 
@@ -30,11 +32,9 @@ SESSION_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = ['.elasticbeanstalk.com', 'vending-machine.maisha.me',
                  'localhost', '127.0.0.1', '172.31.19.88', '35.81.179.6',
-                 '.amazonaws.com', '172.31.42.169']
-
+                 '.amazonaws.com', '172.31.42.169', '35.167.98.20']
 
 # Application definition
-
 INSTALLED_APPS = [
     'item.apps.ItemConfig',
     'django.contrib.admin',
@@ -88,8 +88,6 @@ WSGI_APPLICATION = 'VendingMachine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-import os
-
 if os.environ.get('TESTING') == 'TRUE':
     DATABASES = {
         'default': {
@@ -107,6 +105,57 @@ else:
             'HOST': os.environ['RDS_HOSTNAME'],
             'PORT': os.environ['RDS_PORT'],
         }
+    }
+
+# Logging
+if os.environ.get('TESTING') != 'TRUE':
+    boto3_client = boto3.client(
+        "logs",
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+        region_name=os.getenv('AWS_REGION_NAME')
+    )
+
+    AWS_LOG_GROUP = 'VendingMachineAppLogGroup'
+    AWS_LOG_STREAM = 'VendingMachineApp'
+    AWS_LOGGER_NAME = 'watchtower-logger'
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'aws': {
+                'format': u"%(asctime)s [%(levelname)-8s] %(message)s [%(pathname)s:%(lineno)d]",
+                'datefmt': "%Y-%m-%d %H:%M:%S"
+            },
+        },
+        'handlers': {
+            'watchtower': {
+                'level': 'DEBUG',
+                'class': 'watchtower.CloudWatchLogHandler',
+                'boto3_client': boto3_client,
+                'log_group': AWS_LOG_GROUP,
+                'stream_name': AWS_LOG_STREAM,
+                'formatter': 'aws',
+            },
+        },
+        'loggers': {
+            AWS_LOGGER_NAME: {
+                'level': 'DEBUG',
+                'handlers': ['watchtower'],
+                'propagate': False,
+            },
+            'django': {
+                'handlers': ['watchtower'],
+                'level': 'WARNING',
+                'propagate': False,
+            },
+            'django.request': {
+                'handlers': ['watchtower'],
+                'level': 'ERROR',
+                'propagate': False,
+            }
+        },
     }
 
 # Password validation

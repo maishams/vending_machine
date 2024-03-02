@@ -4,18 +4,23 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+import logging
 
 from item.utils import is_password_strong
 from item.views import render_login_error, login_view
+
+logger = logging.getLogger('watchtower-logger')
 
 
 def perform_authentication(request, details):
     """Authenticate a user based on provided details."""
     return authenticate(request, username=details['username'], password=details['password'])
 
+
 def log_user_in(request, user):
     """Log a user into the system."""
     login(request, user)
+
 
 def validate_registration_details(request):
     """Validate registration details and either create a user or return an error."""
@@ -33,6 +38,7 @@ def validate_registration_details(request):
             return render(request, 'registration.html', context)
     return render(request, 'registration.html', {'registrationFailed': False})
 
+
 def extract_registration_details(request):
     """Extract registration details from the request."""
     return {
@@ -43,6 +49,7 @@ def extract_registration_details(request):
         'confirm_password': request.POST.get('confirm_password')
     }
 
+
 def validate_details(details):
     """Validate the provided registration details."""
     if User.objects.filter(username=details['username']).exists():
@@ -50,26 +57,34 @@ def validate_details(details):
     elif details['password'] != details['confirm_password']:
         return {'is_valid': False, 'error_message': "Passwords do not match."}
     elif not is_password_strong(details['password']):
-        return {'is_valid': False, 'error_message': "Password must be at least 8 characters long and contain both numbers and letters."}
+        return {'is_valid': False,
+                'error_message': "Password must be at least 8 characters long and contain both numbers and letters."}
     return {'is_valid': True}
+
 
 def create_account(details):
     """Create a new user with the provided details."""
     user = User(username=details['username'], first_name=details['name'], last_name=details['last_name'])
     user.set_password(details['password'])
     user.save()
+    logger.info(f"User {user} has been registered")
+
 
 def authenticate_user(request):
     """Authenticate a user and redirect to index or show an error on failure."""
     if request.method == 'POST':
         login_details = extract_login_details(request)
-        user = perform_authentication(request, login_details)
-        if user:
-            log_user_in(request, user)
+        user_authenticated = perform_authentication(request, login_details)
+        username = login_details.get('user')
+        if user_authenticated:
+            log_user_in(request, user_authenticated)
+            logger.info(f"User {username} logged in")
             return HttpResponseRedirect(reverse('index'))
         else:
+            logger.warning(f"User has attempted to login  with invalid details. Request details are: {request}")
             return render_login_error(request)
     return render(request, 'login.html')
+
 
 def extract_login_details(request):
     """Extract login details from the request."""

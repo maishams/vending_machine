@@ -4,9 +4,12 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
 from django.shortcuts import render
+import logging
 
 from VendingMachine import settings
 from item.models import History, Item
+
+logger = logging.getLogger('watchtower-logger')
 
 
 def get_item_list_with_quantity():
@@ -64,6 +67,7 @@ def log_purchase_history(user, item):
     """Log purchase history for a user and an item."""
     history = History(user=user, hItemType=item.itemType, hItemPrice=item.itemPrice)
     history.save()
+    logger.info(f"User {user} has purchased item {item}")
 
 
 def is_password_strong(password):

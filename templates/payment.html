@@ -107,7 +107,7 @@
                     </div>
                     <div class="col-lg-3">
                         {% if item.itemImage != None %}
-                            <img id="image" src="{{ item.itemImage.url }}" alt="Our item">
+                            <img src="{{ MEDIA_URL }}{{ item.itemImage }}" alt="{{ item.itemDescription }}">
                         {% endif %}
                     </div>
                 </div>
