@@ -157,7 +157,7 @@ def dashboard(request):
 @login_required
 def clean_history(request):
     if not is_staff_user(request.user):
-        logger.warning(f"User {request.user} has attempted their history")
+        logger.warning(f"User {request.user} has attempted to clear their history")
         return render_error_page(request, "You do not have permission to delete purchase history.")
 
     if request.method == 'POST':

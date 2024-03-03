@@ -75,13 +75,13 @@ def authenticate_user(request):
     if request.method == 'POST':
         login_details = extract_login_details(request)
         user_authenticated = perform_authentication(request, login_details)
-        username = login_details.get('user')
+        username = request.POST.get('user')
         if user_authenticated:
             log_user_in(request, user_authenticated)
             logger.info(f"User {username} logged in")
             return HttpResponseRedirect(reverse('index'))
         else:
-            logger.warning(f"User has attempted to login  with invalid details. Request details are: {request}")
+            logger.warning(f"User {username} has attempted to login  with invalid details.")
             return render_login_error(request)
     return render(request, 'login.html')
 
