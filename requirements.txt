@@ -1,7 +1,7 @@
 anyio==3.6.2
 asgiref==3.7.2
 async-generator==1.10
-attrs==23.1.0
+attrs==23.2.0
 beautifulsoup4==4.12.2
 bs4==0.0.1
 certifi==2024.2.2
