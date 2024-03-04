@@ -40,7 +40,7 @@ stem==1.8.1
 termcolor==2.4.0
 torrequest==0.1.0
 tqdm==4.66.2
-trio==0.22.0
+trio==0.24.0
 tzdata==2023.3
 urllib3>=1.25.4,<2.1
 pymysql==1.1.0
