@@ -39,7 +39,7 @@ sqlparse==0.4.4
 stem==1.8.1
 termcolor==2.3.0
 torrequest==0.1.0
-tqdm==4.65.0
+tqdm==4.66.2
 trio==0.22.0
 tzdata==2023.3
 urllib3>=1.25.4,<2.1
