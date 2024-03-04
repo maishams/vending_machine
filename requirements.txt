@@ -22,7 +22,7 @@ openpyxl==3.0.10
 outcome==1.2.0
 pandas==2.0.1
 Pillow==10.2.0
-protobuf==4.24.2
+protobuf==4.25.3
 pycparser==2.21
 PySocks==1.7.1
 python-dateutil==2.9.0.post0
