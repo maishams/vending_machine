@@ -6,7 +6,7 @@ beautifulsoup4==4.12.2
 bs4==0.0.1
 certifi==2024.2.2
 cffi==1.15.1
-charset-normalizer==3.1.0
+charset-normalizer==3.3.2
 colorama==0.4.6
 cryptography==42.0.5
 Django==5.0.2
